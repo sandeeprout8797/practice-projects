@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            to do list (basic)
+        </title>
+    </head>
+    <body>
+        <p> to do list </p>
+        <input class="js-input" placeholder="add to do list">
+
+        <button onclick="
+            addTodo()">
+            Add
+        </button>
+
+        <div class="p-class">
+
+        </div>
+        <div class="p2-class">
+
+        </div>
+
+        <script>
+
+            let todoList = [];
+
+            renderTodoList()
+
+            function renderTodoList() {
+
+                let todoListHTML = '';
+
+                for (i = 0; i < todoList.length; i++) {
+                    const todo = todoList[i];
+                    const html = `<p> ${todo} </p>`
+                    todoListHTML += html;
+                }
+                console.log(todoListHTML);
+                document.querySelector('.p-class').innerHTML = todoListHTML;
+                
+            }
+
+            function addTodo () {
+                const inputElement = document.querySelector('.js-input');
+                const name = inputElement.value;
+
+                todoList.push(name);
+                console.log(todoList);
+
+                inputElement.value ='';
+
+                renderTodoList();
+            }
+
+        </script>
+    </body>
+</html>

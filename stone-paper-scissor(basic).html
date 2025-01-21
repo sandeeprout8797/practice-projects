@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>
+            basic rock paper scissor for learning    
+        </title>
+    </head>
+
+    <body>
+        <button onclick="
+            const randomNumber = Math.random();
+            let computerMove =''; 
+
+            if (randomNumber <= 1 / 3) {
+                computerMove = 'rock';
+            } else if (randomNumber >= 2 / 3 && randomNumber >= 1 / 3) {
+                computerMove = 'paper';
+            } else {
+                computerMove ='scissor';
+            }
+            
+            console.log ('computer move', computerMove);
+            
+
+            let result='';
+
+            if (computerMove === 'rock') {
+                result = 'tie';
+            } else if (computerMove === 'paper') {
+                result = 'lose';
+            } else if (computerMove === 'scissor') {
+                result = 'win';
+            }
+            console.log ('your move', 'rock');
+            console.log ('result:', result);
+            alert (result);
+
+            ">
+
+            
+            Rock
+        </button>
+
+        <button onclick="
+            const randomNumber = Math.random();
+            let computerMove =''; 
+
+            if (randomNumber <= 1 / 3) {
+                computerMove = 'rock';
+            } else if (randomNumber >= 2 / 3 && randomNumber >= 1 / 3) {
+                computerMove = 'paper';
+            } else {
+                computerMove ='scissor';
+            }
+            
+            console.log ('computer move', computerMove);
+            
+
+            let result='';
+
+            if (computerMove === 'rock') {
+                result = 'win';
+            } else if (computerMove === 'paper') {
+                result = 'tie';
+            } else if (computerMove === 'scissor') {
+                result = 'lose';
+            }
+            console.log ('your move', 'paper');
+            console.log ('result:', result);
+            alert (result);
+
+        ">
+            Paper
+        </button>
+
+        <button onclick="
+            const randomNumber = Math.random();
+            let computerMove =''; 
+
+            if (randomNumber <= 1 / 3) {
+                computerMove = 'rock';
+            } else if (randomNumber >= 2 / 3 && randomNumber >= 1 / 3) {
+                computerMove = 'paper';
+            } else {
+                computerMove ='scissor';
+            }
+            
+            console.log ('computer move', computerMove);
+            
+
+            let result='';
+
+            if (computerMove === 'rock') {
+                result = 'lose';
+            } else if (computerMove === 'paper') {
+                result = 'win';
+            } else if (computerMove === 'scissor') {
+                result = 'tie';
+            }
+            console.log ('your move', 'scissor');
+            console.log ('result:', result);
+            alert (result);
+
+            ">
+            Scissor
+        </button>
+
+        <script>
+           
+        </script>
+
+    </body>
+</html>
+
+
