@@ -2,11 +2,16 @@
 <html>
     <head>
         <title>
+<<<<<<< HEAD
             fare calculator 
+=======
+            product price caluclator 
+>>>>>>> d6c4cbb2f14f6411f5e2b536d1c3e13fa2e340a2
         </title>
     </head>
     <body>
         <input class="itemName" placeholder="item name">
+<<<<<<< HEAD
         <input class="quantityNo" placeholder="quantity number">
         <input class="rateRate" placeholder="rate of item">
 
@@ -23,10 +28,29 @@
 
     <script>
 
+=======
+        <input class="quantityNo" placeholder="item quantity">
+        <input class="rateRate" placeholder="item rate">
+
+        <div>
+            <button class="addButton"> Add </button>
+            <button class="calcButton"> Calculate </button>
+            <button class="resetData"> Reset </button>
+        </div>
+
+        <p class="init-display">product name || [quantity of product X rate of product] = Amount</p>
+        <h2 class="display-price"></h2>
+        <h1 class="total-display"> totol: 0</h1>
+    </body>
+
+    <script>
+        
+>>>>>>> d6c4cbb2f14f6411f5e2b536d1c3e13fa2e340a2
         let itemArray = [];
         let totalPrice = 0;
 
         document.querySelector('.addButton').addEventListener('click', add);
+<<<<<<< HEAD
         document.querySelector('.totalButton').addEventListener('click', totalDisplay);
         document.querySelector('.resetButton').addEventListener('click', reset);
         document.querySelector('.displayTwo').addEventListener('click', event => {
@@ -55,6 +79,36 @@
 
             document.querySelector('.displayTwo').innerHTML = newItem;
             document.querySelector('.displayTotal').innerHTML = `Total Rs.${totalPrice}`;
+=======
+        document.querySelector('.calcButton').addEventListener('click', totaldisplay);
+        document.querySelector('.resetData').addEventListener('click', clearInput);
+        
+        redisplay();
+
+        function redisplay() {
+            let newitems ='';
+            
+            if (itemArray.length === 0) {
+                document.querySelector('.display-price').innerHTML = "<p>No items added yet.</p>";
+                return;
+            }
+
+            totalPrice = 0;
+
+            for (i =0; i < itemArray.length; i++) {
+                const newobjects = itemArray[i];
+                const {itemName, quantityNo, rateRate} = newobjects;
+                const amount = (quantityNo * rateRate);
+                const html = `<p> ${i + 1}. ${itemName} || quantity[${quantityNo}] X rate[${rateRate}] = Rs.${amount} 
+                            <button class="delete-button" onclick="deleteItem(${i}, ${amount})"> X </button> </p>`;
+// <button class="delete-button" onclick="deleteItem(${i}, ${amount})"> X </button> </p>`;
+                totalPrice += amount;
+                newitems += html;
+            }
+
+            document.querySelector('.display-price').innerHTML = newitems;
+            document.querySelector('.total-display').innerHTML = `total : Rs.${totalPrice}`;
+>>>>>>> d6c4cbb2f14f6411f5e2b536d1c3e13fa2e340a2
 
         }
 
@@ -66,6 +120,7 @@
             const rateInput = document.querySelector('.rateRate');
             const rate = parseFloat(rateInput.value);
 
+<<<<<<< HEAD
             if (!item || isNaN(quantity) || isNaN(rate) || quantity <= 0 || rate <= 0) {
                 clearInput();
                 alert('enter valid inputs');
@@ -86,12 +141,42 @@
             const index = event.target.getAttribute('data-index');
             itemArray.splice(index, 1);
             render();
+=======
+            if (!item || isNaN(quantity) || isNaN(rate)) {
+                alert('enter valid inputs')
+                clearInput()
+                return;
+            }
+            
+            itemArray.push({
+                itemName: item,
+                quantityNo: quantity,
+                rateRate: rate,
+
+            })
+            itemInput.value = '';
+            quantityInput.value = '';
+            rateInput.value = '';
+            redisplay();
+            
+        }
+
+        function deleteItem(index, amount) {
+            itemArray.splice(index, 1);
+            totalPrice -= amount;
+            redisplay();
+        }
+
+        function totaldisplay() {
+            alert(`your total price: Rs.${totalPrice}`)
+>>>>>>> d6c4cbb2f14f6411f5e2b536d1c3e13fa2e340a2
         }
 
         function clearInput() {
             document.querySelector('.itemName').value = '';
             document.querySelector('.quantityNo').value = '';
             document.querySelector('.rateRate').value = '';
+<<<<<<< HEAD
         }
 
         function totalDisplay() {
@@ -105,5 +190,12 @@
             clearInput();
         }
 
+=======
+            itemArray = [];
+            totalPrice = 0;
+            redisplay();
+        }
+       
+>>>>>>> d6c4cbb2f14f6411f5e2b536d1c3e13fa2e340a2
     </script>
 </html>
