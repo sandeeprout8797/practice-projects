@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            fare calculator 
+        </title>
+    </head>
+    <body>
+        <input class="itemName" placeholder="item name">
+        <input class="quantityNo" placeholder="quantity number">
+        <input class="rateRate" placeholder="rate of item">
+
+        <div>
+            <button class="addButton">Add</button>
+            <button class="totalButton">calculate total</button>
+            <button class="resetButton">reset</button>
+        </div>
+
+        <h3 class="displayOne"> item name: [quantity no. X product no. = Amount]</h3>
+        <h2 class="displayTwo"></h2>
+        <h1 class="displayTotal"></h1>
+    </body>
+
+    <script>
+
+        let itemArray = [];
+        let totalPrice = 0;
+
+        document.querySelector('.addButton').addEventListener('click', add);
+        document.querySelector('.totalButton').addEventListener('click', totalDisplay);
+        document.querySelector('.resetButton').addEventListener('click', reset);
+        document.querySelector('.displayTwo').addEventListener('click', event => {
+            if (event.target.classList.contains('deleteHTML')) {
+                deleteItem(event);
+            }
+        });
+        
+        render();
+
+        function render() {
+            let newItem = '';
+            totalPrice = 0;
+            let amount = '';
+
+            for (i = 0; i < itemArray.length; i++) {
+                const itemObjects = itemArray[i];
+                const {itemName, quantityno, rate} = itemObjects;
+                const amount = quantityno * rate;
+                const itemHTML = `<p> ${i + 1}. ${itemName} || [quantityno.(${quantityno}) * rate(${rate})] = Rs.${amount}
+                    <button class="deleteHTML" data-index="${i}"> Delete </button>`;
+
+                newItem += itemHTML;
+                totalPrice += amount;
+            }
+
+            document.querySelector('.displayTwo').innerHTML = newItem;
+            document.querySelector('.displayTotal').innerHTML = `Total Rs.${totalPrice}`;
+
+        }
+
+        function add() {
+            const itemInput = document.querySelector('.itemName');
+            const item = itemInput.value;
+            const quantityInput = document.querySelector('.quantityNo');
+            const quantity = parseFloat(quantityInput.value);
+            const rateInput = document.querySelector('.rateRate');
+            const rate = parseFloat(rateInput.value);
+
+            if (!item || isNaN(quantity) || isNaN(rate) || quantity <= 0 || rate <= 0) {
+                clearInput();
+                alert('enter valid inputs');
+                return;
+            }
+
+            itemArray.push({
+                itemName: item,
+                quantityno: quantity,
+                rate: rate
+            })
+
+            clearInput();
+            render()
+        }
+
+        function deleteItem(event) {
+            const index = event.target.getAttribute('data-index');
+            itemArray.splice(index, 1);
+            render();
+        }
+
+        function clearInput() {
+            document.querySelector('.itemName').value = '';
+            document.querySelector('.quantityNo').value = '';
+            document.querySelector('.rateRate').value = '';
+        }
+
+        function totalDisplay() {
+            alert(`your total value: Rs.${totalPrice}`)
+        }
+
+        function reset() {
+            itemArray = [];
+            totalPrice = 0;
+            render();
+            clearInput();
+        }
+
+    </script>
+</html>
