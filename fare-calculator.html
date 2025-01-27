@@ -4,21 +4,77 @@
         <title>
             fare calculator 
         </title>
+        <style>
+            body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            }
+
+            .titleFare {
+                color: rgb(0, 140, 255);
+            }
+            .inputDiv input {
+                display: block;
+                color: grey;
+                border: 3px grey solid;
+                margin: 15px;
+                border-radius: 9px;
+                height: 40px;
+                width: 300px;
+            }
+            .buttonDiv button {
+                background-color:  rgb(0, 140, 255);
+                border: 1px black solid;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                margin: 15px;
+            }
+            .displayTwo {
+                background-color: white;
+                margin: 15px;
+                border-radius: 5px;
+            }
+
+            .displayTwo p {
+                background-color: lightgray;
+            }
+            
+            .displayTwo button {
+                background-color: red;
+                color: white;
+                border: 1px white solid;
+                border-radius: 4px;
+            }
+
+        </style>
     </head>
     <body>
-        <input class="itemName" placeholder="item name">
-        <input class="quantityNo" placeholder="quantity number">
-        <input class="rateRate" placeholder="rate of item">
-
-        <div>
+        <h1 class="titleFare">
+            Product rate calculator
+        </h1>
+        <div class="inputDiv">
+                <input class="itemName" placeholder="  item name">
+                <input class="quantityNo" placeholder="  quantity number">
+                <input class="rateRate" placeholder="  rate of item">
+        </div>
+        
+        <div class="buttonDiv">
             <button class="addButton">Add</button>
-            <button class="totalButton">calculate total</button>
+            <button class="totalButton">Show total</button>
             <button class="resetButton">reset</button>
         </div>
 
-        <h3 class="displayOne"> item name: [quantity no. X product no. = Amount]</h3>
+        <h3 class="displayOne"> Item Name: [Quantity X Rate = Amount] </h3>
         <h2 class="displayTwo"></h2>
-        <h1 class="displayTotal"></h1>
+        <h1 class="displayTotal">Total Rs.0</h1>
     </body>
 
     <script>
@@ -34,6 +90,14 @@
                 deleteItem(event);
             }
         });
+
+        window.onload = function() {
+            const savedItems = JSON.parse(localStorage.getItem('itemArray'));
+            if (savedItems && savedItems.length > 0) {
+                itemArray = savedItems;
+                render();
+            }
+        };
         
         render();
 
@@ -42,12 +106,17 @@
             totalPrice = 0;
             let amount = '';
 
+            if (itemArray.length === 0) {
+                document.querySelector('.displayTwo').innerHTML = 'enter the product first';
+                return;
+            }
+
             for (i = 0; i < itemArray.length; i++) {
                 const itemObjects = itemArray[i];
                 const {itemName, quantityno, rate} = itemObjects;
                 const amount = quantityno * rate;
-                const itemHTML = `<p> ${i + 1}. ${itemName} || [quantityno.(${quantityno}) * rate(${rate})] = Rs.${amount}
-                    <button class="deleteHTML" data-index="${i}"> Delete </button>`;
+                const itemHTML = `<p class="displayTwoHTML"> ${i + 1}. ${itemName} || [quantityno.(${quantityno}) * rate(${rate})] = Rs.${amount}
+                    <button class="deleteHTML" data-index="${i}"> Delete </button> </p>`;
 
                 newItem += itemHTML;
                 totalPrice += amount;
@@ -55,6 +124,7 @@
 
             document.querySelector('.displayTwo').innerHTML = newItem;
             document.querySelector('.displayTotal').innerHTML = `Total Rs.${totalPrice}`;
+            localStorage.setItem('itemArray', JSON.stringify(itemArray));
 
         }
 
