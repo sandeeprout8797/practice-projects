@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Task list
+        </title>
+        <style>
+            h1 {
+                font-size: 40px;
+                color: red;
+                text-align: center;
+            }
+            .inputDiv {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .inputDiv input {
+                height: 35px;
+                width: 300px;
+                margin-bottom: 20px;
+                border: 5px lightgray solid;
+                border-radius: 9px;
+            }
+            .buttonDiv {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+            .buttonDiv button {
+                background-color: red;
+                color: white;
+                border: 1px white solid;
+                border-radius: 5px;
+                height: 40px;
+                width: 100px;
+            }
+            .buttonDiv button:hover {
+                background-color: rgb(255, 121, 121);
+                cursor: pointer;
+            }
+            .displayTask {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .displayTask button {
+                background-color: rgb(200, 0, 0);
+                color: white;
+                border: none;
+            }
+            .pDisplay {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 900px;
+                background-color: rgb(239, 157, 157);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>To Do TASK List</h1>
+        <div class="inputDiv">
+            <input class="taskName" placeholder=" enter the task here">
+            <input class="timeElement" type="time">
+            <input class="dateElement" type="date">
+        </div>
+        <div class="buttonDiv">
+            <button class="addButton"> ADD </button>
+            <button class="resetButton"> Reset </button>
+        </div>
+        <h2 class="displayTask"></h2>
+
+        <script>
+            let taskArray = [];
+
+            document.querySelector('.addButton').addEventListener('click', add);
+            document.querySelector('.resetButton').addEventListener('click', resetTask);
+
+            window.onload = function() {
+                const saveItem = localStorage.getItem('newtaskArray');
+                if (saveItem) {
+                    taskArray = JSON.parse(saveItem);
+                }
+                render();
+            }
+
+            function render() {
+                let newtaskArray = '';
+
+                if (taskArray.length === 0) {
+                    document.querySelector('.displayTask').innerHTML = 'No tasks to display.';
+                    return;
+                }
+
+                for (let i = 0; i < taskArray.length; i++) {
+                const { task, time, date, done } = taskArray[i];
+                newtaskArray += `<p class="pDisplay"> 
+                                    <input class="checkBox" type="checkbox" data-index="${i}" ${done ? 'checked' : ''}> 
+                                    Task: ${task} || Time: ${time} || Date: ${date} 
+                                    <button class="deleteButton" data-index="${i}">Delete</button>
+                                  </p>`;
+                }
+
+                document.querySelector('.displayTask').innerHTML = newtaskArray;
+                document.querySelectorAll('.deleteButton').forEach((button) => {
+                    button.addEventListener('click', deleteTask);
+                });
+                document.querySelectorAll('.checkBox').forEach((checkbox) => {
+                    checkbox.addEventListener('change', toggle);
+                })
+                localStorage.setItem('newtaskArray', JSON.stringify(taskArray));
+            }
+
+            function add() {
+                const taskInput = document.querySelector('.taskName');
+                const task = taskInput.value;
+                const timeInput = document.querySelector('.timeElement');
+                const time = timeInput.value;
+                const dateInput = document.querySelector('.dateElement');
+                const date = dateInput.value;
+
+                taskArray.push({
+                    task: task,
+                    time: time,
+                    date: date,
+                    done: false
+                })
+
+                clearInputs();
+                render();
+            }
+
+            function clearInputs() {
+                document.querySelector('.taskName').value = '';
+            }
+
+            function deleteTask(event) {
+                const index = event.target.getAttribute('data-index');
+                taskArray.splice(index, 1);
+                localStorage.removeItem('newtaskArray');
+                render();
+            }
+
+            function toggle() {
+                const index = event.target.getAttribute('data-index');
+                taskArray[index].done = event.target.checked;
+                render();
+            }
+
+            function resetTask() {
+                taskArray = [];
+                localStorage.removeItem('newtaskArray');
+                render();
+            }
+        </script>
+    </body>
+</html>

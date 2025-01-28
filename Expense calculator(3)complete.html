@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Expense Calculator
+        </title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .tittleH1 {
+                text-decoration: underline;
+                font-size: 50px;
+                font-family: Arial, Helvetica, sans-serif;
+                color: rgb(162, 0, 255);
+                margin-bottom: 50px;
+            }
+            .inputDiv {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 50px;
+            }
+            .inputDiv input {
+                height: 40px;
+                width: 300px;
+                border: 5px lightgray solid;
+                margin: 10px;
+                border-radius: 5px;
+            }
+            .buttonDiv button {
+                height: 45px;
+                padding: 10px;
+                background-color: rgb(203, 114, 255);
+                color: white;
+                border: 1px white solid;
+            }
+            .displayDiv {
+                margin-top: 50px;
+                text-align: left;
+            }
+            .displayItem {
+                background-color: rgb(224, 179, 250);
+            }
+            .pDisplay {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .pDisplay button:hover {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <h class="tittleH1">Expense Calculator</h>
+        <div class="inputDiv">
+            <input class="itemName" placeholder=" item name">
+            <input class="quantityNo" placeholder=" quantity number">
+            <input class="rateRate" placeholder=" rate of item">
+        </div>
+        <div class="buttonDiv">
+            <button class="addButton"> Add </button>
+            <button class="totalButton"> Show Total </button>
+            <button class="resetButton"> Reset </button>
+        </div>
+        <div class="displayDiv">
+            <h3 class="displayConst"> Item Name: [Quantity X Rate = Amount] </h3>
+            <h2 class="displayItem"></h2>
+            <h1 class="displayTotal"></h1>
+        </div>
+        
+        <script>
+            let itemArray = [];
+            let totalPrice = 0;
+
+            document.querySelector('.addButton').addEventListener('click', add);
+            document.querySelector('.totalButton').addEventListener('click', total);
+            document.querySelector('.resetButton').addEventListener('click', reset);
+
+            window.addEventListener('load', function() {
+                if (localStorage.getItem('itemArray')) {
+                    itemArray = JSON.parse(localStorage.getItem('itemArray'));
+                    totalPrice = JSON.parse(localStorage.getItem('totalPrice'));
+                    render();
+                }
+            });
+
+            function render() {
+                let newitemArray = '';
+                totalPrice = 0;
+
+                if (itemArray.length === 0) {
+                    document.querySelector('.displayItem').innerHTML = 'enter any task first';
+                    document.querySelector('.displayTotal').innerHTML = 'Total Rs.0';
+                    return;
+                }
+
+                for (i = 0; i < itemArray.length; i++) {
+                    const {item, quantity, rate} = itemArray[i];
+                    const amount = quantity * rate;
+                    newitemArray += `<p class="pDisplay">
+                                    ${i + 1}. ${item} || quantity no(${quantity} * rate(${rate}) = Rs.${amount}
+                                    <button class="deleteButton" data-index="${i}"> Delete </button> 
+                                    </p>`
+                    totalPrice += amount;
+                }
+                document.querySelector('.displayItem').innerHTML = newitemArray;
+                document.querySelector('.displayTotal').innerHTML = `Total Rs.${totalPrice}`;
+                document.querySelectorAll('.deleteButton').forEach((button => {
+                    button.addEventListener('click', deleteItem);
+                }))
+                localStorage.setItem('itemArray', JSON.stringify(itemArray));
+                localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+            }
+
+            function add() {
+                const itemInput = document.querySelector('.itemName');
+                const item = itemInput.value;
+                const quantityInput = document.querySelector('.quantityNo');
+                const quantity = quantityInput.value;
+                const rateInput = document.querySelector('.rateRate');
+                const rate = rateInput.value;
+
+                itemArray.push({
+                    item: item,
+                    quantity: quantity,
+                    rate: rate
+                })
+
+                if (!item || isNaN(quantity) || isNaN(rate) || quantity <= 0 || rate <= 0) {
+                    clearInput();
+                    alert('enter valid inputs');
+                    return;
+                }
+
+                render();
+                clearInput();
+            }
+
+            function clearInput() {
+                document.querySelector('.itemName').value = '';
+                document.querySelector('.quantityNo').value = '';
+                document.querySelector('.rateRate').value = '';
+            }
+
+            function deleteItem(event) {
+                const index = event.target.getAttribute('data-index');
+                itemArray.splice(index, 1)
+                localStorage.removeItem('itemArray');
+                localStorage.removeItem('totalPrice');
+                render();
+            }
+
+            function reset() {
+                clearInput();
+                itemArray = [];
+                localStorage.removeItem('itemArray');
+                localStorage.removeItem('totalPrice');
+                document.querySelector('.displayTotal').innerHTML = `Total Rs.0`;
+                document.querySelector('.displayItem').innerHTML = 'enter any task first';
+            }
+
+            function total() {
+                alert(`Total price: ${totalPrice}`);
+                return;
+            }
+        </script>
+    </body>
+</html>
