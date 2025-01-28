@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            To Do list
+        </title>
+    </head>
+    <body>
+        <input class="taskName" placeholder="enter the task here">
+        <input class="timeElement" type="time">
+        <input class="dateElement" type="date">
+        <button class="addButton"> ADD </button>
+        <button class="resetButton"> Reset </button>
+
+        <p class="displayTask"></p>
+
+        <script>
+            let taskArray = [];
+
+            document.querySelector('.addButton').addEventListener('click', add);
+            document.querySelector('.resetButton').addEventListener('click', resetTask);
+
+            function render() {
+                let newtaskArray = '';
+
+                if (taskArray.length === 0) {
+                    document.querySelector('.displayTask').innerHTML = 'No tasks to display.';
+                    return;
+                }
+
+                for (let i = 0; i < taskArray.length; i++) {
+                const { task, time, date, done } = taskArray[i];
+                newtaskArray += `<p> 
+                                    <input class="checkBox" type="checkbox" data-index="${i}" ${done ? 'checked' : ''}> 
+                                    Task: ${task} || Time: ${time} || Date: ${date} 
+                                    <button class="deleteButton" data-index="${i}">Delete</button>
+                                  </p>`;
+                }
+
+                document.querySelector('.displayTask').innerHTML = newtaskArray;
+                document.querySelectorAll('.deleteButton').forEach((button) => {
+                    button.addEventListener('click', deleteTask);
+                });
+                document.querySelectorAll('.checkBox').forEach((checkbox) => {
+                    checkbox.addEventListener('change', toggle);
+                })
+            }
+
+            function add() {
+                const taskInput = document.querySelector('.taskName');
+                const task = taskInput.value;
+                const timeInput = document.querySelector('.timeElement');
+                const time = timeInput.value;
+                const dateInput = document.querySelector('.dateElement');
+                const date = dateInput.value;
+
+                taskArray.push({
+                    task: task,
+                    time: time,
+                    date: date,
+                    done: false
+                })
+
+                clearInputs();
+                render();
+            }
+
+            function clearInputs() {
+                document.querySelector('.taskName').value = '';
+            }
+
+            function deleteTask(event) {
+                const index = event.target.getAttribute('data-index');
+                taskArray.splice(index, 1);
+                render();
+            }
+
+            function toggle() {
+                const index = event.target.getAttribute('data-index');
+                taskArray[index].done = event.target.checked;
+                render();
+            }
+
+            function resetTask() {
+                taskArray = [];
+                render();
+            }
+        </script>
+    </body>
+</html>
