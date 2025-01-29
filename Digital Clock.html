@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Digital Clock
+        </title>
+        <style>
+            body {
+                background-color: black;
+                color: white;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 300px;
+                justify-content: center;
+            }
+            .timeDisplay {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: black;
+                height: 300px;
+                font-size: 150px;
+            }
+            .dayDisplay {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 50px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="timeDisplay">
+            <div class="hourDisplay"></div>
+            <div class="minuteDisplay"></div>
+            <div class="secondDisplay"></div>
+        </div>
+        <div class="dayDisplay"></div>
+        <script>
+
+            clock();
+
+            function clock() {
+                const timeElement = new Date();
+                const dayNames = ['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+                const hours = String(timeElement.getHours()).padStart(2, '0');
+                const minutes = String(timeElement.getMinutes()).padStart(2, '0');
+                const seconds = String(timeElement.getSeconds()).padStart(2, '0');
+
+                const dates = String(timeElement.getDate()).padStart(2, '0');
+                const days = dayNames[timeElement.getDay()];
+                const months = monthNames[timeElement.getMonth()];
+                const years = String(timeElement.getFullYear());
+
+                const timestring = `${hours}:${minutes}:${seconds}`;
+                const daystring = `${dates} || ${days} || ${months} || ${years}`;
+
+                document.querySelector('.hourDisplay').innerHTML = `${hours}:`;
+                document.querySelector('.minuteDisplay').innerHTML = `${minutes}:`;
+                document.querySelector('.secondDisplay').innerHTML = seconds;
+                document.querySelector('.dayDisplay').innerHTML = daystring;
+
+            }
+            setInterval(clock, 1000);
+
+        </script>
+    </body>
+</html>
